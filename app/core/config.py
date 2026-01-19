@@ -6,6 +6,11 @@ class Settings(BaseSettings):
     environment: str = "development"
     debug: bool = True
 
+    openai_api_key: str
+    pinecone_api_key: str
+    pinecone_environment: str
+    pinecone_index_name: str
+
     class Config:
         env_file = ".env"
 

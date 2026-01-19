@@ -6,10 +6,16 @@ client = OpenAI(api_key=settings.openai_api_key)
 
 def embed_text(text: str) -> list[float]:
     """
-    Generate embedding using text-embedding-3-small (512 dims)
+    Generate 512-dim embeddings using text-embedding-3-small
     """
     response = client.embeddings.create(
         model="text-embedding-3-small",
-        input=text
+        input=text,
     )
-    return response.data[0].embedding
+    embedding = response.data[0].embedding
+
+    assert len(embedding) == 1536, f"Embedding dim mismatch: {len(embedding)}"
+
+
+    return embedding
+

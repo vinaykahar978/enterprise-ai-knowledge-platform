@@ -3,6 +3,9 @@ import uuid
 from fastapi import UploadFile
 from app.services.text_extraction_service import extract_text
 from app.services.chunking_service import chunk_text
+from app.services.embedding_service import embed_text
+from app.services.vector_store_service import upsert_chunk_embedding
+
 
 
 DOCUMENTS_DIR = "data/documents"
@@ -33,17 +36,19 @@ async def save_document(file: UploadFile):
     chunk_records = []
     for index, chunk in enumerate(chunks):
         chunk_id = f"{document_id}_{index}"
-        chunk_path = os.path.join("data/chunks", f"{chunk_id}.txt")
 
-        with open(chunk_path, "w", encoding="utf-8") as f:
-            f.write(chunk)
+        embedding = embed_text(chunk)
 
-        chunk_records.append({
-            "chunk_id": chunk_id,
-            "document_id": document_id,
-            "index": index,
-            "path": chunk_path,
-        })
+        upsert_chunk_embedding(
+            chunk_id=chunk_id,
+            embedding=embedding,
+            metadata={
+                "document_id": document_id,
+                "chunk_index": index,
+                "text": chunk,
+            },
+        )
+
 
     return {
         "id": document_id,
