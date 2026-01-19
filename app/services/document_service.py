@@ -22,3 +22,17 @@ async def save_document(file: UploadFile):
         "size": len(contents),
         "path": file_path
     }
+
+def list_documents():
+    documents = []
+
+    for filename in os.listdir(DOCUMENTS_DIR):
+        path = os.path.join(DOCUMENTS_DIR, filename)
+        size = os.path.getsize(path)
+
+        documents.append({
+            "filename": filename,
+            "size": size
+        })
+
+    return documents
