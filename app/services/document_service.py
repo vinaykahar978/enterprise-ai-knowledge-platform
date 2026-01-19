@@ -2,6 +2,8 @@ import os
 import uuid
 from fastapi import UploadFile
 from app.services.text_extraction_service import extract_text
+from app.services.chunking_service import chunk_text
+
 
 DOCUMENTS_DIR = "data/documents"
 TEXT_DIR = "data/text"
@@ -25,12 +27,32 @@ async def save_document(file: UploadFile):
     with open(text_path, "w", encoding="utf-8") as f:
         f.write(extracted_text)
 
+    # 🔹 CHUNKING
+    chunks = chunk_text(extracted_text)
+
+    chunk_records = []
+    for index, chunk in enumerate(chunks):
+        chunk_id = f"{document_id}_{index}"
+        chunk_path = os.path.join("data/chunks", f"{chunk_id}.txt")
+
+        with open(chunk_path, "w", encoding="utf-8") as f:
+            f.write(chunk)
+
+        chunk_records.append({
+            "chunk_id": chunk_id,
+            "document_id": document_id,
+            "index": index,
+            "path": chunk_path,
+        })
+
     return {
         "id": document_id,
         "filename": file.filename,
         "size": len(contents),
         "text_path": text_path,
+        "chunks": chunk_records,
     }
+
 
 
 def list_documents():
