@@ -5,6 +5,7 @@ from app.services.text_extraction_service import extract_text
 from app.services.chunking_service import chunk_text
 from app.services.embedding_service import embed_text
 from app.services.vector_store_service import upsert_chunk_embedding
+from app.services.text_normalization_service import normalize_text
 
 
 
@@ -24,7 +25,9 @@ async def save_document(file: UploadFile):
     with open(file_path, "wb") as f:
         f.write(contents)
 
-    extracted_text = extract_text(file_path, file.filename)
+    raw_text = extract_text(file_path, file.filename)
+    extracted_text = normalize_text(raw_text)
+
 
     text_path = os.path.join(TEXT_DIR, f"{document_id}.txt")
     with open(text_path, "w", encoding="utf-8") as f:
