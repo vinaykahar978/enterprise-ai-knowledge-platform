@@ -8,5 +8,6 @@ dependencies = [
     "fastapi>=0.128.0",
     "pydantic-settings>=2.12.0",
     "pypdf>=6.6.0",
+    "python-multipart>=0.0.21",
     "uvicorn>=0.40.0",
 ]
