@@ -22,3 +22,27 @@ def upsert_chunk_embedding(
             }
         ]
     )
+
+def query_similar_chunks(
+    embedding: list[float],
+    top_k: int = 5,
+):
+    response = index.query(
+        vector=embedding,
+        top_k=top_k,
+        include_metadata=True,
+    )
+
+    results = []
+
+    for match in response.matches:
+        results.append({
+            "chunk_id": match.id,
+            "score": match.score,
+            "document_id": match.metadata.get("document_id"),
+            "chunk_index": match.metadata.get("chunk_index"),
+            "text": match.metadata.get("text"),
+        })
+
+    return results
+
