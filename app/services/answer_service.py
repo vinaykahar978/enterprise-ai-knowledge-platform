@@ -1,3 +1,19 @@
+"""
+
+DEPRECATED MODULE
+
+This service previously handled direct answer generation using OpenAI.
+It has been intentionally disabled to enforce LLM governance via:
+
+- Agent Orchestration
+- Context Control Plane
+- LLM Gateway with Observability
+
+Do NOT use this module.
+
+
+
+
 from openai import OpenAI
 from app.core.config import settings
 from app.services.query_service import retrieve_relevant_chunks
@@ -31,3 +47,9 @@ def generate_answer(question: str, top_k: int = 5):
         "answer": response.choices[0].message.content,
         "sources": retrieved_chunks,
     }
+"""
+
+raise RuntimeError(
+    "answer_service is deprecated. "
+    "Use agent orchestrator + llm gateway instead."
+)
