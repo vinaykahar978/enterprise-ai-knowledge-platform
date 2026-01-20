@@ -12,27 +12,49 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="bg-gray-100 text-gray-900">
+      <body className="bg-slate-50 text-slate-900 antialiased">
         <div className="flex min-h-screen">
-          <aside className="w-64 bg-white border-r p-4">
-            <h2 className="font-semibold text-lg mb-6">
-              AI Platform
-            </h2>
-            <nav className="space-y-2">
-              <a href="/" className="block text-sm hover:underline">
+          {/* Sidebar */}
+          <aside className="w-64 bg-white border-r border-slate-200 flex flex-col">
+            <div className="px-6 py-5 border-b border-slate-200">
+              <h2 className="text-lg font-semibold tracking-tight">
+                Enterprise AI
+              </h2>
+              <p className="text-xs text-slate-500 mt-1">
+                Knowledge & Decision Platform
+              </p>
+            </div>
+
+            <nav className="flex-1 px-4 py-6 space-y-1 text-sm">
+              <a
+                href="/"
+                className="block rounded-md px-3 py-2 hover:bg-slate-100 transition"
+              >
                 Ask
               </a>
-              <a href="/upload" className="block text-sm hover:underline">
-                Upload Docs
+
+              <a
+                href="/upload"
+                className="block rounded-md px-3 py-2 hover:bg-slate-100 transition"
+              >
+                Upload Documents
+              </a>
+
+              <a
+                href="/admin"
+                className="block rounded-md px-3 py-2 hover:bg-slate-100 transition"
+              >
+                Admin & Observability
               </a>
             </nav>
-            <a href="/admin" className="block text-sm hover:underline">
-              Admin
-            </a>
 
+            <div className="px-6 py-4 border-t border-slate-200 text-xs text-slate-500">
+              © Internal Platform
+            </div>
           </aside>
 
-          <main className="flex-1 p-8">
+          {/* Main Content */}
+          <main className="flex-1 p-8 max-w-6xl mx-auto w-full">
             {children}
           </main>
         </div>

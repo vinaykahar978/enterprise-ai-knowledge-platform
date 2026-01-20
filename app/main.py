@@ -1,4 +1,21 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+
+app = FastAPI(title="Enterprise AI Platform")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 from app.core.config import settings
 from app.core.logging import setup_logging
 from app.routes.health import router as health_router
@@ -9,11 +26,8 @@ from app.routes.query.query import router as query_router
 from app.routes.ask.ask import router as ask_router
 from app.routes.admin.observability import router as admin_router
 
+
 setup_logging()
-
-app = FastAPI(title=settings.app_name)
-
-app.middleware("http")(request_id_middleware)
 
 app.include_router(health_router)
 app.include_router(document_router)
