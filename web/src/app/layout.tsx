@@ -26,6 +26,10 @@ export default function RootLayout({
                 Upload Docs
               </a>
             </nav>
+            <a href="/admin" className="block text-sm hover:underline">
+              Admin
+            </a>
+
           </aside>
 
           <main className="flex-1 p-8">
