@@ -7,6 +7,7 @@ from app.routes.documents.upload import router as document_router
 from app.routes.documents.list import router as document_list_router
 from app.routes.query.query import router as query_router
 from app.routes.ask.ask import router as ask_router
+from app.routes.admin.observability import router as admin_router
 
 setup_logging()
 
@@ -19,6 +20,7 @@ app.include_router(document_router)
 app.include_router(document_list_router)
 app.include_router(query_router)
 app.include_router(ask_router)
+app.include_router(admin_router)
 
 @app.get("/")
 def root():
