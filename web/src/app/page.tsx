@@ -33,6 +33,9 @@ export default function AskPage() {
         Ask
       </button>
 
+      
+
+      
       {answer && (
         <div className="mt-6">
           <h2 className="font-semibold">Answer</h2>
@@ -40,7 +43,8 @@ export default function AskPage() {
         </div>
       )}
 
-      {answer.sources && (
+      
+      {answer?.sources && (
         <div className="mt-6">
           <h3 className="font-semibold">Sources</h3>
           <ul className="text-sm mt-2 space-y-2">
@@ -53,6 +57,7 @@ export default function AskPage() {
           </ul>
         </div>
       )}
+
 
     </div>
   );
