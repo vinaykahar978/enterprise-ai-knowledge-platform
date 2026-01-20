@@ -1,25 +1,19 @@
 import logging
-from app.llm.models import LLMRequest, LLMResponse
-from app.llm.observability import LLM_CALL_LOGS
 
+logger = logging.getLogger(__name__)
+
+# ✅ DEFINE AT MODULE LEVEL
 LLM_CALL_LOGS: list[dict] = []
 
-logger = logging.getLogger("llm_observability")
 
-@router.get("/llm")
-def get_llm_usage():
-    return LLM_CALL_LOGS
-
-
-def log_llm_call(request: LLMRequest, response: LLMResponse):
+def log_llm_call(request: dict, response: dict):
     entry = {
-        "model": response.model,
-        "cost": response.estimated_cost,
-        "prompt_length": len(request.prompt),
+        "model": response.get("model"),
+        "usage": response.get("usage"),
     }
+
     LLM_CALL_LOGS.append(entry)
 
     logger.info(
-        f"LLM_CALL | model={response.model} | cost={response.estimated_cost:.6f}"
+        f"LLM_CALL | model={entry['model']} | usage={entry['usage']}"
     )
-

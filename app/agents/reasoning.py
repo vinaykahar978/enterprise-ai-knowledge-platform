@@ -1,18 +1,35 @@
-from app.agents.base import Agent
-from app.llm.models import LLMRequest
 from app.llm.gateway import call_llm_gateway
 from app.llm.observability import log_llm_call
-from app.services.prompt_service import build_rag_prompt
 
 
-class ReasoningAgent(Agent):
-    def run(self, question: str, chunks: list[dict]):
-        contexts = [c["text"] for c in chunks]
-        prompt = build_rag_prompt(question, contexts)
+class ReasoningAgent:
+    def run(self, question: str, chunks: list[dict]) -> str:
+        """
+        Generates an answer using retrieved chunks.
+        """
 
-        request = LLMRequest(prompt=prompt)
-        response = call_llm_gateway(request)
+        context_text = "\n\n".join(
+            f"- {c['text']}" for c in chunks
+        )
 
-        log_llm_call(request, response)
+        prompt = f"""
+You are an enterprise AI assistant.
+Answer the question using ONLY the context below.
 
-        return response.text
+Context:
+{context_text}
+
+Question:
+{question}
+
+Answer:
+"""
+
+        response = call_llm_gateway(prompt)
+
+        log_llm_call(
+            request={"prompt": prompt},
+            response=response,
+        )
+
+        return response["text"]

@@ -1,20 +1,19 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from app.services.answer_service import generate_answer
-from app.context.context_models import KnowledgeContext
+
+from app.agents.orchestrator import run_agent_pipeline
 
 router = APIRouter(prefix="/ask", tags=["ask"])
 
 
 class AskRequest(BaseModel):
     question: str
-    context: KnowledgeContext
+    context: dict | None = None
 
 
-@router.post("/")
-def ask_question(request: AskRequest):
-    return generate_answer(
-        question=request.question,
-        context=request.context,
+@router.post("")
+async def ask_question(req: AskRequest):
+    return await run_agent_pipeline(
+        question=req.question,
+        context=req.context,
     )
-

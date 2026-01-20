@@ -1,19 +1,30 @@
-from app.llm.models import LLMRequest, LLMResponse
-from app.services.openai_client import call_openai  # existing helper
+from openai import OpenAI
+from app.core.config import settings
+
+client = OpenAI(api_key=settings.openai_api_key)
 
 
-def call_llm_gateway(request: LLMRequest) -> LLMResponse:
-    text = call_openai(
-        prompt=request.prompt,
-        model=request.model,
-        max_tokens=request.max_tokens,
+def call_llm_gateway(
+    prompt: str,
+    model: str = "gpt-4o-mini",
+    temperature: float = 0.2,
+) -> dict:
+    """
+    Central LLM gateway.
+    All model calls must go through this function.
+    """
+
+    response = client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": "You are a helpful enterprise AI assistant."},
+            {"role": "user", "content": prompt},
+        ],
+        temperature=temperature,
     )
 
-    # Cost estimation placeholder (rough)
-    estimated_cost = len(request.prompt) * 0.000001
-
-    return LLMResponse(
-        text=text,
-        model=request.model,
-        estimated_cost=estimated_cost,
-    )
+    return {
+        "model": model,
+        "text": response.choices[0].message.content,
+        "usage": response.usage,
+    }

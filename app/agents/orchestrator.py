@@ -7,12 +7,21 @@ from app.tools.audit import log_tool_execution
 from app.memory.service import write_session_memory
 
 
-def run_agentic_flow(question: str, context: KnowledgeContext):
+async def run_agent_pipeline(
+    question: str,
+    context: dict | None = None,
+):
+    """
+    Core agent orchestration pipeline.
+    """
+
+    knowledge_context = KnowledgeContext(**context) if context else KnowledgeContext()
+
     retriever = RetrieverAgent()
     reasoning = ReasoningAgent()
     validator = ValidatorAgent()
 
-    chunks = retriever.run(question, context)
+    chunks = retriever.run(question, knowledge_context)
     raw_answer = reasoning.run(question, chunks)
     final_answer = validator.run(raw_answer, chunks)
 
