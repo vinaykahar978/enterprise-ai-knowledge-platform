@@ -13,14 +13,23 @@ export default function AdminPage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold mb-4">Admin & Observability</h1>
+      <h1 className="text-xl font-semibold mb-4">
+        Admin & Observability
+      </h1>
 
       {!data && <p>Loading...</p>}
 
       {data && (
-        <pre className="bg-gray-100 p-4 text-xs overflow-auto">
-          {JSON.stringify(data, null, 2)}
-        </pre>
+        <>
+          
+          <h2 className="font-semibold mt-6 mb-2">
+            Memory State (Read-Only)
+          </h2>
+
+          <pre className="bg-gray-100 p-4 text-xs overflow-auto">
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        </>
       )}
     </div>
   );
