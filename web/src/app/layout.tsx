@@ -39,13 +39,14 @@ export default function RootLayout({
               >
                 Upload Documents
               </a>
-
+              {/*
               <a
                 href="/admin"
                 className="block rounded-md px-3 py-2 hover:bg-slate-100 transition"
               >
                 Admin & Observability
               </a>
+              */}
             </nav>
 
             <div className="px-6 py-4 border-t border-slate-200 text-xs text-slate-500">
